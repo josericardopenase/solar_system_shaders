@@ -1,9 +1,9 @@
 import * as THREE from 'three';
 const { createApp, ref } = Vue
-import {Jupiter, Mars, Mercury, Neptune, Planet, Saturn, Uranus, Venus} from "./planets/Planet.ts";
+import {Jupiter, Mars, Mercury, Moon, Neptune, Planet, Saturn, Uranus, Venus} from "./planets/Planet.ts";
 import {Sun} from "./planets/Sun.ts";
 import {PlanetPhysics} from "./planets/physics.ts";
-import {setupCameraControls, setupRenderer} from "./planets/utils.ts";
+import {createOrbitPath, setupCameraControls, setupRenderer} from "./planets/utils.ts";
 import {Earth} from "./planets/Earth.ts";
 import {TextureLoader} from "three";
 import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
@@ -20,6 +20,7 @@ const cameraPivot = new THREE.Object3D();
 scene.add(cameraPivot);
 cameraPivot.add(camera);
 const initialPivotPosition = cameraPivot.position.clone();
+
 
 camera.position.set(0, 325, 0)
 camera.lookAt(0, 0, 0)
@@ -38,9 +39,10 @@ const marsPhysics = new PlanetPhysics(mars.mesh(), {
     orbitStrength: 5,
     orbitColor: 0xb55228
 });
-marsPhysics.addToScene(scene)
 mars.mesh().position.set(100, 0, 0)
 
+
+marsPhysics.addToScene(scene)
 
 const earth = new Earth();
 const earthPhysics = new PlanetPhysics(earth.mesh(), {
@@ -48,14 +50,24 @@ const earthPhysics = new PlanetPhysics(earth.mesh(), {
     rotationCenter: new THREE.Vector3(0, 0),
     drawOrbit: true,
     rotationVelocity: 1,
-    selfRotationVelocity: 3,
-    orbitInclination:0,
+    selfRotationVelocity: 2,
+    orbitInclination: 0,
     orbitStrength: 5,
     orbitColor: 0xff9321
 });
-earthPhysics.addToScene(scene)
-earth.mesh().position.set(100, 0, 0)
+earth.mesh().position.set(100, 0, 0);
 
+const moon = new Moon();
+earth.mesh().add(moon.mesh());
+moon.mesh().position.set(10, 0, 0);
+
+
+const moonOrbit = createOrbitPath(10, 0xaaaaaa, 1);
+earth.mesh().add(moonOrbit);
+
+earthPhysics.addToScene(scene);
+
+earthPhysics.addToScene(scene);
 
 const mercury = new Mercury();
 const mercuryPhysics = new PlanetPhysics(mercury.mesh(), {
@@ -92,14 +104,18 @@ const jupyterPhysics = new PlanetPhysics(jupyter.mesh(), {
     rotationCenter: new THREE.Vector3(0, 0),
     drawOrbit: true,
     rotationVelocity: 0.6,
-    selfRotationVelocity: 3,
+    selfRotationVelocity: 1.2,
     orbitInclination:20,
     orbitStrength: 5,
     orbitColor:0xf2bb83
 });
-jupyterPhysics.addToScene(scene)
 jupyter.mesh().position.set(100, 0, 0)
-
+const moon2 = new Moon();
+jupyter.mesh().add(moon2.mesh());
+moon2.mesh().position.set(20, 0, 0);
+const moonOrbit2 = createOrbitPath(20, 0xaaaaaa, 1);
+jupyter.mesh().add(moonOrbit2);
+jupyterPhysics.addToScene(scene)
 
 const saturn = new Saturn();
 const saturnPhysics = new PlanetPhysics(saturn.mesh(), {
@@ -182,7 +198,7 @@ var planets = [
 
 function resetSpaceship(){
     spaceShip.position.set(20, 0, -500);
-    spaceShip.scale.set(2, 2, 2);
+    spaceShip.scale.set(0.05, 0.05, 0.05);
     spaceShip.rotation.set(0, 0, 0)
 }
 function resetCamera(){
@@ -371,22 +387,37 @@ window.addEventListener("keyup", (event) => {
 function moveAndRotateSpaceShip() {
     if (spaceShip) {
         const direction = new THREE.Vector3();
-        spaceShip.getWorldDirection(direction); // Obtener la dirección de la nave
+        spaceShip.getWorldDirection(direction);
 
-        // Mover hacia adelante y atrás
-        if (moveForward) spaceShip.position.add(direction.multiplyScalar(0.5));
-        if (moveBackward) spaceShip.position.add(direction.multiplyScalar(-0.5));
+        const tiltAngle = 0.4;
+        const forwardTiltAngle = 0.2;
+        const tiltSpeed = 0.03;
+        spaceShip.position.add(direction.multiplyScalar(0.3));
+
+        if (moveBackward) {
+            spaceShip.rotation.x = THREE.MathUtils.lerp(spaceShip.rotation.x, forwardTiltAngle, tiltSpeed);
+        } else if (moveForward) {
+            spaceShip.rotation.x = THREE.MathUtils.lerp(spaceShip.rotation.x, -forwardTiltAngle, tiltSpeed);
+        } else {
+            spaceShip.rotation.x = THREE.MathUtils.lerp(spaceShip.rotation.x, 0, tiltSpeed);
+        }
+
         if (rotateLeft) {
-            spaceShip.rotation.y += 0.05;
-            cameraPivot.rotation.y += 0.05; // Gira el pivote para que la cámara gire con la nave
+            spaceShip.rotation.y += 0.005;
+            cameraPivot.rotation.y += 0.005;
+            spaceShip.rotation.z = THREE.MathUtils.lerp(spaceShip.rotation.z, -tiltAngle, tiltSpeed);
+        } else if (rotateRight) {
+            spaceShip.rotation.y -= 0.005;
+            cameraPivot.rotation.y -= 0.005;
+            spaceShip.rotation.z = THREE.MathUtils.lerp(spaceShip.rotation.z, tiltAngle, tiltSpeed);
+        } else {
+            spaceShip.rotation.z = THREE.MathUtils.lerp(spaceShip.rotation.z, 0, tiltSpeed);
         }
-        if (rotateRight) {
-            spaceShip.rotation.y -= 0.05;
-            cameraPivot.rotation.y -= 0.05;
-        }
+
         cameraPivot.position.copy(spaceShip.position);
     }
 }
+
 
 renderButtonsList(planets)
 renderPlanetList(planets)
@@ -405,9 +436,9 @@ function animate() {
 
     if(currentPlanet?.spacial && spaceShip){
         moveAndRotateSpaceShip()
-        camera.position.set(0, 9, -20);
+        camera.position.set(0, 0, -0.7);
         camera.lookAt(spaceShip.position)
-        camera.position.y += 9
+        camera.position.y += 0.3
     }
     requestAnimationFrame(animate);
     renderer.render(scene, camera);

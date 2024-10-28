@@ -26,3 +26,22 @@ export function setupCameraControls(camera: THREE.PerspectiveCamera, renderer: T
     controls.maxPolarAngle = Math.PI / 2; // Limit vertical angle if needed
     return controls
 }
+// Moon orbit
+export function createOrbitPath(radius, color = 0xffffff, strength = 1) {
+    const orbitPoints = [];
+    for (let i = 0; i <= 64; i++) {
+        const angle = (i / 64) * 2 * Math.PI;
+        const x = radius * Math.cos(angle);
+        const z = radius * Math.sin(angle);
+        orbitPoints.push(new THREE.Vector3(x, 0, z));
+    }
+
+    const orbitGeometry = new THREE.BufferGeometry().setFromPoints(orbitPoints);
+    const orbitMaterial = new THREE.LineBasicMaterial({
+        color: color,
+        linewidth: strength,
+    });
+
+    const orbitLine = new THREE.LineLoop(orbitGeometry, orbitMaterial);
+    return orbitLine;
+}

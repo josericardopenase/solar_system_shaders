@@ -86,6 +86,12 @@ export class Earth extends Planet {
     }
 }
 
+export class Moon extends Planet {
+    constructor() {
+        super(0.5, "./public/moon.jpg");
+    }
+}
+
 export class Mars extends Planet {
     constructor() {
         super(3.5, "./public/mars.jpg");
@@ -115,3 +121,5 @@ export class Neptune extends Planet {
         super(7, "./public/neptune.jpg");
     }
 }
+
+
