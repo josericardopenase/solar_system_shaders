@@ -10,7 +10,7 @@ import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
 
 let currentPlanet = null;
 const scene = new THREE.Scene();
-scene.background = new TextureLoader().load("/public/bg.jpg")
+scene.background = new TextureLoader().load("./public/bg.jpg")
 scene.backgroundIntensity = 0.2
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer();
@@ -309,7 +309,7 @@ function renderPlanetList(list : {name: string, mesh ?: PlanetPhysics}[]){
 const loader = new GLTFLoader();
 let spaceShip = null;
 loader.load(
-    '/public/ship.gltf', // Path to your model file
+    './public/ship.gltf', // Path to your model file
     (gltf) => {
         const m = gltf.scene;
         scene.add(m);

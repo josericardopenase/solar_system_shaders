@@ -32,6 +32,6 @@ export class Star {
 
 export class Sun extends Star {
     constructor() {
-        super(20, "/public/sun.jpg", 2800, 0.2);
+        super(20, "./public/sun.jpg", 2800, 0.2);
     }
 }
