@@ -61,26 +61,26 @@ export class Planet {
 
 export class Mercury extends Planet {
     constructor() {
-        super(2, "http://127.0.0.1:3000/mercury.jpg");
+        super(2, "/assets/mercury.jpg");
     }
 }
 
 export class Venus extends Planet {
     constructor() {
-        super(4.5, "http://127.0.0.1:3000/venus.jpg");
+        super(4.5, "/assets/venus.jpg");
     }
 }
 
 export class Earth extends Planet {
     constructor() {
-        super(5, "http://127.0.0.1:3000/earth.jpg", {
-            bumpMapUrl: "http://127.0.0.1:3000/earth_bump.jpg",
+        super(5, "/assets/earth.jpg", {
+            bumpMapUrl: "/assets/earth_bump.jpg",
             bumpScale: 0.1,
-            specularMapUrl: "http://127.0.0.1:3000/earth_specular.jpg",
+            specularMapUrl: "/assets/earth_specular.jpg",
             specularColor: new THREE.Color("blue"),
             shininess: 50,
-            cloudMapUrl: "http://127.0.0.1:3000/earth_clouds.jpg",
-            cloudAlphaMapUrl: "http://127.0.0.1:3000/earth_clouds_alpha.jpg",
+            cloudMapUrl: "/assets/earth_clouds.jpg",
+            cloudAlphaMapUrl: "/assets/earth_clouds_alpha.jpg",
             cloudOpacity: 0.3,
         });
     }
@@ -88,30 +88,30 @@ export class Earth extends Planet {
 
 export class Mars extends Planet {
     constructor() {
-        super(3.5, "http://127.0.0.1:3000/mars.jpg");
+        super(3.5, "/assets/mars.jpg");
     }
 }
 
 export class Jupiter extends Planet {
     constructor() {
-        super(10, "http://127.0.0.1:3000/jupiter.jpg");
+        super(10, "/assets/jupiter.jpg");
     }
 }
 
 export class Saturn extends Planet {
     constructor() {
-        super(9, "http://127.0.0.1:3000/saturn.jpg");
+        super(9, "/assets/saturn.jpg");
     }
 }
 
 export class Uranus extends Planet {
     constructor() {
-        super(7, "http://127.0.0.1:3000/uranus.jpg");
+        super(7, "/assets/uranus.jpg");
     }
 }
 
 export class Neptune extends Planet {
     constructor() {
-        super(7, "http://127.0.0.1:3000/neptune.jpg");
+        super(7, "/assets/neptune.jpg");
     }
 }

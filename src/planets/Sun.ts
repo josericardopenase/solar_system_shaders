@@ -32,6 +32,6 @@ export class Star {
 
 export class Sun extends Star {
     constructor() {
-        super(20, "http://127.0.0.1:3000/sun.jpg", 2800, 0.2);
+        super(20, "/assets/sun.jpg", 2800, 0.2);
     }
 }

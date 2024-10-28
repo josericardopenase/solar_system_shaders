@@ -3,6 +3,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
 export function setupRenderer(renderer: THREE.WebGLRenderer) {
     const element = document.getElementById("threejs");
+    if(element == null) return;
 
     const resizeRenderer = () => {
         renderer.setSize(element.offsetWidth, element.offsetHeight);
@@ -12,7 +13,6 @@ export function setupRenderer(renderer: THREE.WebGLRenderer) {
     resizeRenderer();
 
     new ResizeObserver(resizeRenderer).observe(element);
-
     element.appendChild(renderer.domElement);
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
