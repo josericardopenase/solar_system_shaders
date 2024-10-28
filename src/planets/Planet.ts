@@ -61,26 +61,26 @@ export class Planet {
 
 export class Mercury extends Planet {
     constructor() {
-        super(2, "/assets/mercury.jpg");
+        super(2, "/public/mercury.jpg");
     }
 }
 
 export class Venus extends Planet {
     constructor() {
-        super(4.5, "/assets/venus.jpg");
+        super(4.5, "/public/venus.jpg");
     }
 }
 
 export class Earth extends Planet {
     constructor() {
-        super(5, "/assets/earth.jpg", {
-            bumpMapUrl: "/assets/earth_bump.jpg",
+        super(5, "/public/earth.jpg", {
+            bumpMapUrl: "/public/earth_bump.jpg",
             bumpScale: 0.1,
-            specularMapUrl: "/assets/earth_specular.jpg",
+            specularMapUrl: "/public/earth_specular.jpg",
             specularColor: new THREE.Color("blue"),
             shininess: 50,
-            cloudMapUrl: "/assets/earth_clouds.jpg",
-            cloudAlphaMapUrl: "/assets/earth_clouds_alpha.jpg",
+            cloudMapUrl: "/public/earth_clouds.jpg",
+            cloudAlphaMapUrl: "/public/earth_clouds_alpha.jpg",
             cloudOpacity: 0.3,
         });
     }
@@ -88,30 +88,30 @@ export class Earth extends Planet {
 
 export class Mars extends Planet {
     constructor() {
-        super(3.5, "/assets/mars.jpg");
+        super(3.5, "/public/mars.jpg");
     }
 }
 
 export class Jupiter extends Planet {
     constructor() {
-        super(10, "/assets/jupiter.jpg");
+        super(10, "/public/jupiter.jpg");
     }
 }
 
 export class Saturn extends Planet {
     constructor() {
-        super(9, "/assets/saturn.jpg");
+        super(9, "/public/saturn.jpg");
     }
 }
 
 export class Uranus extends Planet {
     constructor() {
-        super(7, "/assets/uranus.jpg");
+        super(7, "/public/uranus.jpg");
     }
 }
 
 export class Neptune extends Planet {
     constructor() {
-        super(7, "/assets/neptune.jpg");
+        super(7, "/public/neptune.jpg");
     }
 }
