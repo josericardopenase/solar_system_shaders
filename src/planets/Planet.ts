@@ -4,6 +4,7 @@ import { TextureLoader } from "three";
 export class Planet {
     private planetMesh: THREE.Mesh;
     private cloudsMesh?: THREE.Mesh;
+    public texture ?: THREE.Texture;
 
     constructor(
         radius: number,
@@ -20,9 +21,10 @@ export class Planet {
             cloudOpacity?: number;
         } = {}
     ) {
+        this.texture = new TextureLoader().load(mapUrl);
         const geometry = new THREE.SphereGeometry(radius, 20, 20);
         const material = new THREE.MeshPhongMaterial({
-            map: new TextureLoader().load(mapUrl),
+            map:this.texture,
             bumpMap: options.bumpMapUrl ? new TextureLoader().load(options.bumpMapUrl) : undefined,
             bumpScale: options.bumpScale ?? 1,
             specularMap: options.specularMapUrl ? new TextureLoader().load(options.specularMapUrl) : undefined,
@@ -94,7 +96,7 @@ export class Moon extends Planet {
 
 export class Mars extends Planet {
     constructor() {
-        super(3.5, "./public/mars.jpg");
+        super(8.5, "./public/mars.jpg");
     }
 }
 
